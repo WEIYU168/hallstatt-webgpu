@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hallstatt 高斯世界 · Marble</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Spark（World Labs 的高斯潑濺渲染器）目前只支援 WebGL2，所以這頁用 three.module.js 而非 WebGPU 版本 -->
+  <!-- 載入監看：直接雙擊 HTML（file://）時瀏覽器會擋下程式模組，網路斷線時程式庫也下載不到；
+       這兩種情況都改成顯示說明，而不是永遠停在「載入中」 -->
+  <script>
+    window.__bootFail = function (why) {
+      if (window.__appStarted || window.__bootShown) return;
+      var s = document.getElementById('status'), b = document.getElementById('start');
+      if (!s) return;
+      window.__bootShown = true;
+      var local = location.protocol === 'file:' || location.protocol === 'data:';
+      s.className = 'boot-error';
+      s.innerHTML = local
+        ? '<b>這個網頁不能直接雙擊開啟。</b><br>瀏覽器的安全限制會擋下 <code>file://</code> 網頁裡的程式模組，所以會一直停在載入中。<br>請回到資料夾，雙擊 <b>「啟動遊戲.bat」</b>，它會自動用正確的網址打開。'
+        : (why === 'timeout'
+          ? '<b>程式庫下載時間過長。</b><br>遊戲需要連上網路下載 three.js（cdn.jsdelivr.net）。請確認網路連線後重新整理（F5）。'
+          : '<b>程式載入失敗。</b><br>請確認網路連線（需要連到 cdn.jsdelivr.net），並使用最新版 Chrome 或 Edge，然後重新整理（F5）。');
+      if (b) b.textContent = '無法開始';
+    };
+    if (location.protocol === 'file:') document.addEventListener('DOMContentLoaded', function () { window.__bootFail('file'); });
+    setTimeout(function () { window.__bootFail('timeout'); }, 25000);
+  </script>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
+      "@sparkjsdev/spark": "https://sparkjs.dev/releases/spark/2.1.0/spark.module.js",
+      "three-mesh-bvh": "https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.8.3/build/index.module.js"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <div id="hud" class="hidden">
+    <div class="title">Hallstatt <span>高斯世界</span></div>
+    <div id="count"></div>
+    <div id="nearest"></div>
+  </div>
+  <div id="crosshair" class="hidden"></div>
+  <div id="toast"><h3></h3><p></p></div>
+  <div id="info" class="hidden"><span id="backend">WebGL 2 · Spark</span> · <span id="fps">-- fps</span></div>
+  <div id="help" class="hidden">WASD 移動 · Shift 加速 · 空白鍵 跳躍／上升 · Ctrl 下降 · 滑鼠／方向鍵 轉視角 · G 切換飛行 · F 翻轉高斯 · C 顯示碰撞網格</div>
+
+  <div id="overlay">
+    <div class="card">
+      <h1>Hallstatt</h1>
+      <p class="sub">World Labs Marble · 高斯潑濺世界</p>
+      <p id="desc">載入 marble/ 資料夾中的 .spz 高斯世界與碰撞網格。</p>
+      <button id="start" disabled>載入中…</button>
+      <p id="status">正在讀取設定…</p>
+      <p><a href="index.html" style="color:#ffd98a">← 回到程式生成版</a></p>
+    </div>
+  </div>
+
+  <script type="module" src="src/splat-main.js" onerror="__bootFail('module')"></script>
+</body>
+</html>

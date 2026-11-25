@@ -1,0 +1,23 @@
+# 本機工具設定（Claude 預覽設定等），不需要上傳
+.claude/
+
+# 你自己的素材：簡報 PDF 與參考照片只留在本機
+/*.pdf
+/*.JPG
+/*.jpg
+/*.jpeg
+/*.png
+
+# Marble 匯出的高斯世界與碰撞網格（檔案大、授權依方案而定），以及你放進 photos/ 的照片
+/marble/*.spz
+/marble/*.ply
+/marble/*.glb
+/marble/world.json
+/photos/*
+!/photos/README.md
+
+# 其他
+__pycache__/
+*.log
+Thumbs.db
+.DS_Store

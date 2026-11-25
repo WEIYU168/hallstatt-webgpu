@@ -1,0 +1,9 @@
+{
+  "splat": "marble/hallstatt.spz",
+  "collider": "marble/hallstatt-collider.glb",
+  "splatFlip": true,
+  "colliderFlip": false,
+  "scale": 1,
+  "spawn": [0, 1.7, 0],
+  "yaw": 0
+}

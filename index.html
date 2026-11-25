@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hallstatt 哈修塔特 · WebGPU</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 字型不阻擋頁面載入：先用系統字型顯示，下載完再換上 -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Great+Vibes&family=Noto+Serif+TC:wght@400;600;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="style.css">
+  <!-- 載入監看：直接雙擊 HTML（file://）時瀏覽器會擋下程式模組，網路斷線時程式庫也下載不到；
+       這兩種情況都改成顯示說明，而不是永遠停在「載入中」 -->
+  <script>
+    window.__bootFail = function (why) {
+      if (window.__appStarted || window.__bootShown) return;
+      var s = document.getElementById('status'), b = document.getElementById('start');
+      if (!s) return;
+      window.__bootShown = true;
+      var local = location.protocol === 'file:' || location.protocol === 'data:';
+      s.className = 'boot-error';
+      s.innerHTML = local
+        ? '<b>這個網頁不能直接雙擊開啟。</b><br>瀏覽器的安全限制會擋下 <code>file://</code> 網頁裡的程式模組，所以會一直停在載入中。<br>請回到資料夾，雙擊 <b>「啟動遊戲.bat」</b>，它會自動用正確的網址打開。'
+        : (why === 'timeout'
+          ? '<b>程式庫下載時間過長。</b><br>遊戲需要連上網路下載 three.js（cdn.jsdelivr.net）。請確認網路連線後重新整理（F5）。'
+          : '<b>程式載入失敗。</b><br>請確認網路連線（需要連到 cdn.jsdelivr.net），並使用最新版 Chrome 或 Edge，然後重新整理（F5）。');
+      if (b) b.textContent = '無法開始';
+    };
+    if (location.protocol === 'file:') document.addEventListener('DOMContentLoaded', function () { window.__bootFail('file'); });
+    setTimeout(function () { window.__bootFail('timeout'); }, 25000);
+  </script>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.webgpu.js",
+      "three/webgpu": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.webgpu.js",
+      "three/tsl": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.tsl.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <div id="hud" class="hidden">
+    <div class="title">Hallstatt <span>哈修塔特</span></div>
+    <div id="count">明信片 0 / 6</div>
+    <div id="nearest"></div>
+  </div>
+  <div id="crosshair" class="hidden"></div>
+  <div id="toast"><h3></h3><p></p></div>
+  <div id="info" class="hidden"><span id="backend"></span> · <span id="fps">-- fps</span> · <span id="tod"></span> · 畫質 <span id="quality"></span> · <span id="music"></span></div>
+  <div id="prompt" class="hidden"></div>
+  <div id="help" class="hidden">WASD 移動 · Shift 奔跑 · 空白鍵 跳躍 · 滑鼠／方向鍵 轉視角 · E 上下船 · P 明信片冊 · M 音樂 · T 時間 · Q 切換畫質 · Esc 暫停</div>
+
+  <div id="overlay">
+    <div class="card">
+      <h1>Hallstatt</h1>
+      <p class="sub">奧地利 · 哈修塔特湖畔小鎮</p>
+      <p>走遍小鎮、搭船遊湖，找到 7 張漂浮的明信片——每一張都會變成一幅手繪水彩，訴說一段小鎮的故事。</p>
+      <button id="start" disabled>載入中…</button>
+      <p id="status">正在初始化 WebGPU…</p>
+      <p><a href="splat.html" style="color:#ffd98a">高斯世界版（World Labs Marble）→</a></p>
+    </div>
+  </div>
+
+  <script type="module" src="src/main.js" onerror="__bootFail('module')"></script>
+</body>
+</html>
